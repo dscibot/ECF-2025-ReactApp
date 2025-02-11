@@ -1,9 +1,9 @@
-version: 2.1
+version: 2.1 
 
 executors:
   react-native-expo:
     docker:
-      - image: cimg/node:20.8  # Image Node.js avec npm et Yarn
+      - image: cimg/node:20.8  
     working_directory: ~/app
 
 jobs:
@@ -28,10 +28,13 @@ jobs:
       - checkout
       - run:
           name: Install Expo CLI
-          command: npm install -g expo-cli
+          command: npm install expo-cli --location=global  
+      - run:
+          name: Vérification de l'installation Expo
+          command: npx expo --version 
       - run:
           name: Build Expo project
-          command: expo build:web  # Pour builder une version web
+          command: npx expo build:web 
 
 workflows:
   version: 2
