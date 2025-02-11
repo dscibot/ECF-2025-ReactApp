@@ -3,7 +3,7 @@ version: 2.1
 executors:
   react-native-expo:
     docker:
-      - image: cimg/node:20.8  
+      - image: cimg/node:20.8  # Image Node.js avec npm et Yarn
     working_directory: ~/app
 
 jobs:
@@ -27,14 +27,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install Expo CLI
-          command: npm install expo-cli --location=global  
-      - run:
-          name: Vérification de l'installation Expo
-          command: npx expo --version 
+          name: Install Expo CLI Locally
+          command: npm install expo-cli
       - run:
           name: Build Expo project
-          command: npx expo build:web 
+          command: npx expo build:web  # Utilisation de `npx` pour éviter les erreurs
 
 workflows:
   version: 2
