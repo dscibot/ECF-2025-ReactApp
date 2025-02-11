@@ -31,7 +31,7 @@ jobs:
           command: npm install expo-cli
       - run:
           name: Build Expo project
-          command: npx expo build:web  # Utilisation de `npx` pour éviter les erreurs
+          command: npx expo export:web  # expo build:web is not supported in the local CLI, please use npx expo export:web instead
 
 workflows:
   version: 2
