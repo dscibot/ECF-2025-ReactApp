@@ -1,0 +1,43 @@
+version: 2.1
+
+executors:
+  react-native-expo:
+    docker:
+      - image: cimg/node:20.8  # Image Node.js avec npm et Yarn
+    working_directory: ~/app
+
+jobs:
+  install-dependencies:
+    executor: react-native-expo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Install dependencies
+          command: npm install
+      - save_cache:
+          key: v1-dependencies-{{ checksum "package.json" }}
+          paths:
+            - node_modules
+
+  build-app:
+    executor: react-native-expo
+    steps:
+      - checkout
+      - run:
+          name: Install Expo CLI
+          command: npm install -g expo-cli
+      - run:
+          name: Build Expo project
+          command: expo build:web  # Pour builder une version web
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - install-dependencies
+      - build-app:
+          requires:
+            - install-dependencies
