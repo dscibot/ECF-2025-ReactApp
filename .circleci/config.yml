@@ -31,7 +31,7 @@ jobs:
           command: npm install expo-cli
       - run:
           name: Build Expo project
-          command: npx expo export:web  # expo build:web is not supported in the local CLI, please use npx expo export:web instead
+          command: npx expo export  # CommandError: expo export:web can only be used with Webpack. Use expo export for other bundlers.
 
 workflows:
   version: 2
