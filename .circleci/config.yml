@@ -1,43 +1,43 @@
-version: 2.1 
+version: 2.1  # Version CircleCI
 
 executors:
   react-native-expo:
     docker:
-      - image: cimg/node:20.8  # Image Node.js avec npm et Yarn
-    working_directory: ~/app
+      - image: cimg/node:20.8  # DockerNode.js, incluant npm et Yarn
+    working_directory: ~/app  # Repertoire travail conteneur 
 
 jobs:
   install-dependencies:
-    executor: react-native-expo
+    executor: react-native-expo  
     steps:
-      - checkout
+      - checkout  # Récupère le code source depuis le dépôt
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v1-dependencies-{{ checksum "package.json" }}  # Restaure le cache des dépendances si disponible
       - run:
           name: Install dependencies
-          command: npm install
+          command: npm install  # Installe les dépendances npm
       - save_cache:
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "package.json" }}  # Sauvegarde le cache des dépendances
           paths:
-            - node_modules
+            - node_modules  # Répertoire des dépendances à sauvegarder
 
   build-app:
     executor: react-native-expo
     steps:
-      - checkout
+      - checkout  # Récupère le code source depuis le dépôt
       - run:
           name: Install Expo CLI Locally
-          command: npm install expo-cli
+          command: npm install expo-cli  # Installe Expo CLI localement
       - run:
           name: Build Expo project
-          command: npx expo export  # CommandError: expo export:web can only be used with Webpack. Use expo export for other bundlers.
+          command: npx expo export  # build project 
 
 workflows:
-  version: 2
+  version: 2  # Version du workflow
   build-and-test:
     jobs:
-      - install-dependencies
+      - install-dependencies  # installation des dépendances
       - build-app:
           requires:
-            - install-dependencies
+            - install-dependencies  # le build ne requiert la fin d'installation des dépendances
